@@ -1,6 +1,7 @@
 //Dependences to use and libraries
 const http=require('http');
 const express=require('express');
+
 const app=express(); // to create routes and api
 const sqlite3=require('sqlite3').verbose();
 const path=require('path');
@@ -10,13 +11,17 @@ app.set('port',process.env.PORT || 5000)
 
 //Resources
 app.use(express.static(__dirname+'/'))
+
+//Configuration of servidor
 app.use(express.json());
 app.set('json spaces',2);
 //Starting the server
 app.set("view engine","ejs");
+
 app.set("views", path.join(__dirname,"/"));
 app.use(express.urlencoded({extended:false})); // support the data
 app.listen(5000);
+console.log("Server is running"); 
 console.log(`Server is running now in the port ${app.get('port')}`);
 
 //Base de Datos
@@ -60,7 +65,7 @@ let students=[
     {"name": "Andres", "salary": 2500, "job_name":"Tech Lead"},
     {"name": "Wences", "salary": 5500, "job_name":"Instructor and Mentor"}
 ]
-    
+
     for (let i=0; i< students.length; i++){
          db.run('INSERT INTO STUDENTS(Name, Salary, Job_name) VALUES(?, ?, ?)',students[i]["name"],students[i]["salary"],students[i]["job_name"],(err,rows)=>{
          if(err){
@@ -71,7 +76,7 @@ let students=[
     }
 
 //get all the students
-app.get("/",(req,res)=>{
+app.get("/api/students",(req,res)=>{
     const sql= 'SELECT * FROM STUDENTS';
     let array = []
     db.all(sql, [], (err, rows) => {
@@ -83,4 +88,16 @@ app.get("/",(req,res)=>{
             });
             res.json(array);
     });
-})
+}) 
+
+//show an student by id
+app.get("/api/students/:id",(req,res)=>{
+    const sql= 'SELECT * FROM STUDENTS WHERE ID=?';
+    let params = [req.params.id]
+    db.get(sql, params, (err, row) => {
+        if (err) {
+            throw err;
+        }
+        res.json(row);
+    });
+}) 
