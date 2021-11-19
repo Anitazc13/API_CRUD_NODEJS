@@ -101,3 +101,53 @@ app.get("/api/students/:id",(req,res)=>{
         res.json(row);
     });
 }) 
+
+
+//delete an student by id
+app.delete("/api/students/:id", (req, res) => {
+    db.run(
+        'DELETE FROM STUDENTS WHERE id = ?',
+        req.params.id,
+        function (err, result) {
+            if (err){
+                throw err;
+            }
+            res.json({"message":"deleted"})
+    });
+})
+
+//create an student
+app.post('/api/students',(req,res)=>{
+	const sql="INSERT INTO STUDENTS(NAME, SALARY, JOB_NAME) VALUES(?,?,?)";
+	const newStudent=[req.body.NAME, req.body.SALARY, req.body.JOB_NAME];
+	db.run(sql, newStudent, err =>{
+	if (err){
+                throw err;
+			}
+			else{
+			res.redirect("/api/students");
+		}
+	})
+});
+
+//update a row in student
+app.patch("/api/students/:id", (req, res, next) => {
+    let data = {
+        name: req.body.name,
+        salary: req.body.salary,
+        job_name : req.body.job_name 
+    }
+    db.run(
+        `UPDATE students set 
+           name = COALESCE(?,NAME), 
+           salary = COALESCE(?,salary), 
+           job_name = COALESCE(?,job_name) 
+           WHERE id = ?`,
+        [data.NAME, data.SALARY, data.JOB_NAME, req.params.id],
+        function (err, result) {
+            if (err){
+                throw err;
+            }
+            res.redirect("/api/students");
+    });
+})
