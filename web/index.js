@@ -131,7 +131,7 @@ app.post('/api/students',(req,res)=>{
 });
 
 //update a row in student
-app.patch("/api/students/:id", (req, res, next) => {
+app.patch("/api/students/:id", (req, res) => {
     let data = {
         name: req.body.name,
         salary: req.body.salary,
