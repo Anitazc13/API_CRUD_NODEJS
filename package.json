@@ -11,7 +11,11 @@
   },
   "devDependencies": {},
   "scripts": {
+<<<<<<< HEAD
     "start": "index.js",
+=======
+    "start":"index.js",
+>>>>>>> 7150354357daad9c5cdab5ce678c5f1aea7cb969
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

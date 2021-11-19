@@ -1,6 +1,7 @@
 //Dependences to use and libraries
 const http=require('http');
 const express=require('express');
+<<<<<<< HEAD
 
 const app=express(); // to create routes and api
 const sqlite3=require('sqlite3').verbose();
@@ -9,10 +10,17 @@ const path=require('path');
 //settings
 app.set('port',process.env.PORT || 5000)
 
+=======
+const app=express();
+const sqlite3=require('sqlite3').verbose();
+const path=require('path');
+
+>>>>>>> 7150354357daad9c5cdab5ce678c5f1aea7cb969
 //Resources
 app.use(express.static(__dirname+'/'))
 
 //Configuration of servidor
+<<<<<<< HEAD
 app.use(express.json());
 app.set('json spaces',2);
 //Starting the server
@@ -151,3 +159,10 @@ app.patch("/api/students/:id", (req, res) => {
             res.redirect("/api/students");
     });
 })
+=======
+app.set("view engine","ejs");
+app.set("views", path.join(__dirname,""));
+app.use(express.urlencoded({extended:false}));
+app.listen(5000);
+console.log("Server is running");
+>>>>>>> 7150354357daad9c5cdab5ce678c5f1aea7cb969
