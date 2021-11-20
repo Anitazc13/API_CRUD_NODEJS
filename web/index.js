@@ -117,7 +117,7 @@ app.delete("/api/students/:id", (req, res) => {
 })
 
 //create an student
-app.post('/api/students',(req,res)=>{
+app.post('/api/students/',(req,res)=>{
 	const sql="INSERT INTO STUDENTS(NAME, SALARY, JOB_NAME) VALUES(?,?,?)";
 	const newStudent=[req.body.NAME, req.body.SALARY, req.body.JOB_NAME];
 	db.run(sql, newStudent, err =>{
@@ -125,29 +125,27 @@ app.post('/api/students',(req,res)=>{
                 throw err;
 			}
 			else{
-			res.redirect("/api/students");
-		}
+                res.redirect("/api/students");
+            }
 	})
 });
 
 //update a row in student
-app.patch("/api/students/:id", (req, res) => {
-    let data = {
-        name: req.body.name,
-        salary: req.body.salary,
-        job_name : req.body.job_name 
-    }
-    db.run(
-        `UPDATE students set 
-           name = COALESCE(?,NAME), 
-           salary = COALESCE(?,salary), 
-           job_name = COALESCE(?,job_name) 
-           WHERE id = ?`,
-        [data.NAME, data.SALARY, data.JOB_NAME, req.params.id],
-        function (err, result) {
-            if (err){
-                throw err;
-            }
-            res.redirect("/api/students");
-    });
+app.put("/api/students/:id",(req, res)=>{
+	const id=req.params.id;
+	const info_student=[req.body.NAME, req.body.SALARY, req.body.JOB_NAME, id];
+	const sql=`UPDATE students set 
+    name = ?, 
+    salary = ?, 
+    job_name = ? 
+    WHERE id = ?`;
+
+	db.run(sql, info_student, err =>{
+			if (err){
+				return console.error(err.message);
+			}
+			else{
+					res.redirect("/api/students");
+		}
+	});
 })
