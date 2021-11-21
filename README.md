@@ -11,6 +11,3 @@
 
 ## Use of Swagger UI !
 Simply access to `http://localhost:5000/api/students` to access. It allows to run each route to manipulate the database.
-
-## Licence
-MIT
